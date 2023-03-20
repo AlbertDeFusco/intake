@@ -240,7 +240,10 @@ class DataFrameTransform(GenericTransform):
         return Schema(dtype=self._df.dtypes, shape=(None, len(self._df.columns)), npartitions=self._df.npartitions, metadata=self.metadata)
 
     def read(self):
-        return self.to_dask().compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.to_dask().compute()
 
 
 class Columns(DataFrameTransform):

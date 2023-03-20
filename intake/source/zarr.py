@@ -73,7 +73,10 @@ class ZarrArraySource(DataSource):
 
     def read(self):
         self._get_schema()
-        return self._arr.compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self._arr.compute()
 
     def _close(self):
         self._arr = None

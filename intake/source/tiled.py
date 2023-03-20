@@ -126,7 +126,10 @@ class TiledSource(DataSource):
         return self.instance.read()
 
     def read(self):
-        return self.instance.read().compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.instance.read().compute()
 
     def _yaml(self):
         y = super()._yaml()

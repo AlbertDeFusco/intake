@@ -40,7 +40,10 @@ class RemoteSequenceSource(RemoteSource):
 
     def read(self):
         self._load_metadata()
-        return self.bag.compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.bag.compute()
 
     def to_dask(self):
         self._load_metadata()

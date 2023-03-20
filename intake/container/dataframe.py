@@ -45,7 +45,10 @@ class RemoteDataFrame(RemoteSource):
 
     def read(self):
         self._load_metadata()
-        return self.dataframe.compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.dataframe.compute()
 
     def to_dask(self):
         self._load_metadata()
@@ -162,7 +165,10 @@ class GenericDataFrame(DataSource):
 
     def read(self):
         self._load_metadata()
-        return self.dataframe.compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.dataframe.compute()
 
     def to_dask(self):
         self._load_metadata()

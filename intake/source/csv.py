@@ -116,7 +116,10 @@ class CSVSource(base.DataSource, base.PatternMixin):
 
     def read(self):
         self._get_schema()
-        return self._dataframe.compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self._dataframe.compute()
 
     def to_dask(self):
         self._get_schema()

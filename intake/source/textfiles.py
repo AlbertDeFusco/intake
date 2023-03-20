@@ -84,7 +84,10 @@ class TextFilesSource(base.DataSource):
 
     def read(self):
         self._get_schema()
-        return self.to_dask().compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.to_dask().compute()
 
     def to_spark(self):
         from intake_spark.base import SparkHolder

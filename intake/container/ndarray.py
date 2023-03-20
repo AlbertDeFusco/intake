@@ -47,7 +47,10 @@ class RemoteArray(RemoteSource):
 
     def read(self):
         self._load_metadata()
-        return self.arr.compute()
+        from dask.diagnostics import ProgressBar
+
+        with ProgressBar():
+            return self.arr.compute()
 
     def to_dask(self):
         self._load_metadata()
