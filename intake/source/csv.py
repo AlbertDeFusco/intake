@@ -5,6 +5,7 @@
 # The full license is in the LICENSE file, distributed with this software.
 # -----------------------------------------------------------------------------
 
+from ..utils import dask_progress
 from . import base
 from .utils import reverse_formats, unique_string
 
@@ -116,9 +117,7 @@ class CSVSource(base.DataSource, base.PatternMixin):
 
     def read(self):
         self._get_schema()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self._dataframe.compute()
 
     def to_dask(self):

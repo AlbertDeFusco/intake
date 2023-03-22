@@ -13,6 +13,7 @@ import sys
 import warnings
 from collections import OrderedDict
 from contextlib import contextmanager
+from typing import ContextManager
 
 import yaml
 
@@ -284,3 +285,14 @@ def is_notebook() -> bool:
         return True
     except Exception:
         return False
+
+
+def dask_progress() -> ContextManager:
+    from contextlib import nullcontext
+
+    if is_notebook():
+        from dask.diagnostics import ProgressBar
+
+        return ProgressBar()
+    else:
+        return nullcontext()

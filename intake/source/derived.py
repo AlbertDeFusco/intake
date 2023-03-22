@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 from .. import open_catalog
+from ..utils import dask_progress
 from . import import_name
 from .base import DataSource, Schema
 
@@ -240,9 +241,7 @@ class DataFrameTransform(GenericTransform):
         return Schema(dtype=self._df.dtypes, shape=(None, len(self._df.columns)), npartitions=self._df.npartitions, metadata=self.metadata)
 
     def read(self):
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.to_dask().compute()
 
 

@@ -5,6 +5,7 @@
 # The full license is in the LICENSE file, distributed with this software.
 # -----------------------------------------------------------------------------
 
+from ..utils import dask_progress
 from .base import DataSource, Schema
 
 
@@ -73,9 +74,7 @@ class ZarrArraySource(DataSource):
 
     def read(self):
         self._get_schema()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self._arr.compute()
 
     def _close(self):

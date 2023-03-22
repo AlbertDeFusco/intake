@@ -8,6 +8,7 @@ from packaging.version import Version
 
 from intake.source.base import DataSource, Schema
 
+from ..utils import dask_progress
 from .base import RemoteSource, get_partition
 
 
@@ -45,9 +46,7 @@ class RemoteDataFrame(RemoteSource):
 
     def read(self):
         self._load_metadata()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.dataframe.compute()
 
     def to_dask(self):
@@ -165,9 +164,7 @@ class GenericDataFrame(DataSource):
 
     def read(self):
         self._load_metadata()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.dataframe.compute()
 
     def to_dask(self):

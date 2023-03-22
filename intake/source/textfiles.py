@@ -5,6 +5,7 @@
 # The full license is in the LICENSE file, distributed with this software.
 # -----------------------------------------------------------------------------
 
+from ..utils import dask_progress
 from . import base, import_name
 
 
@@ -84,9 +85,7 @@ class TextFilesSource(base.DataSource):
 
     def read(self):
         self._get_schema()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.to_dask().compute()
 
     def to_spark(self):

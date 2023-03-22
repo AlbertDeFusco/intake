@@ -7,6 +7,7 @@
 
 import itertools
 
+from ..utils import dask_progress
 from .base import RemoteSource, Schema, get_partition
 
 
@@ -47,9 +48,7 @@ class RemoteArray(RemoteSource):
 
     def read(self):
         self._load_metadata()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.arr.compute()
 
     def to_dask(self):

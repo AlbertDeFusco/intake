@@ -3,6 +3,7 @@ from tiled.client.node import Node
 
 from intake.catalog import Catalog
 from intake.source import DataSource
+from intake.utils import dask_progress
 
 
 class TiledCatalog(Catalog):
@@ -126,9 +127,7 @@ class TiledSource(DataSource):
         return self.instance.read()
 
     def read(self):
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.instance.read().compute()
 
     def _yaml(self):

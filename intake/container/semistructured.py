@@ -7,6 +7,7 @@
 
 from intake.container.base import RemoteSource, get_partition
 from intake.source.base import Schema
+from intake.utils import dask_progress
 
 
 class RemoteSequenceSource(RemoteSource):
@@ -40,9 +41,7 @@ class RemoteSequenceSource(RemoteSource):
 
     def read(self):
         self._load_metadata()
-        from dask.diagnostics import ProgressBar
-
-        with ProgressBar():
+        with dask_progress():
             return self.bag.compute()
 
     def to_dask(self):
